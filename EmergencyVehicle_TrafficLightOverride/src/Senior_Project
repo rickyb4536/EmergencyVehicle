@@ -1,0 +1,155 @@
+//Emergency Vehicle Override
+
+//initialize
+#define NOT_AN_INTERRUPT -1
+int ledPins[] = {1,2,3,4,5,6,7,8,9,10,11,12,13};
+int ledState;
+
+int RED = 10;
+int Yellow=9;
+int Green= 8;
+int red2=6;
+int yellow2=5;
+int green2=4;
+int x = 0;
+
+unsigned long counter=0;
+unsigned long start_time = 0;  
+unsigned long end_time = 0; 
+unsigned long timeDifference = 0;
+volatile unsigned long time;
+
+
+void setup() {
+  // put your setup code here, to run once:
+ int i;
+ 
+
+ 
+ //4 way stoplight
+  pinMode(RED,OUTPUT);  
+  pinMode(Yellow,OUTPUT);  
+ pinMode(Green,OUTPUT);  
+  pinMode(red2,OUTPUT);  
+  pinMode(yellow2,OUTPUT);  
+  pinMode(green2,OUTPUT);
+  
+  attachInterrupt(digitalPinToInterrupt(2), flash, CHANGE);
+
+   }
+
+//emergency vehicle
+void flash() {
+   //Serial.println(x, DEC); //print x to serial monitor
+   if (x == 0)
+   {
+     start_time = millis();
+   }
+   x++;
+   Serial.println(x);
+   if (x == 10)
+   {
+     end_time = millis();
+     timeDifference = (end_time - start_time);
+     Serial.print("Time: ");
+     Serial.println(end_time - start_time);
+     x = 0;
+   }   
+
+}
+void loop(){
+    counter++;
+  if(counter==30000) // Red2 ON & RED ON
+  {
+   
+    digitalWrite(RED, HIGH);
+    digitalWrite(Yellow, LOW);
+    digitalWrite(Green, LOW); 
+    
+    digitalWrite(red2, HIGH);
+    digitalWrite(yellow2, LOW);
+    digitalWrite(green2, LOW);
+   
+  }
+   
+   
+   if(counter==90000)         // RED ON & green2 ON
+   {
+   digitalWrite(RED, HIGH);
+    digitalWrite(Yellow, LOW);
+    digitalWrite(Green, LOW); 
+    
+    digitalWrite(red2, LOW);
+    digitalWrite(yellow2, LOW);
+    digitalWrite(green2, HIGH);
+   
+    }
+
+if(counter==1500000)   // RED on & Yellow2 ON
+{
+   digitalWrite(RED, HIGH);
+    digitalWrite(Yellow, LOW);
+    digitalWrite(Green, LOW); 
+    
+    digitalWrite(red2, LOW);
+    digitalWrite(yellow2, HIGH);
+    digitalWrite(green2, LOW);
+
+ 
+    
+}
+
+  if(counter==1800000) // RED on & red2 ON
+{
+   digitalWrite(RED, HIGH);
+    digitalWrite(Yellow, LOW);
+    digitalWrite(Green, LOW); 
+    
+    digitalWrite(red2, HIGH);
+    digitalWrite(yellow2, LOW);
+    digitalWrite(green2, LOW);
+   
+    
+}
+
+
+    
+
+
+if(counter==2100000)  //Green ON & red2 ON
+{
+   digitalWrite(RED, LOW);
+    digitalWrite(Yellow, LOW);
+    digitalWrite(Green, HIGH); 
+    
+    digitalWrite(red2, HIGH);
+    digitalWrite(yellow2, LOW);
+    digitalWrite(green2, LOW);
+   
+    
+}
+
+if(counter==2400000) //Yellow ON & red2 ON
+{
+   digitalWrite(RED, LOW);
+    digitalWrite(Yellow, HIGH);
+    digitalWrite(Green, LOW); 
+    
+    digitalWrite(red2, HIGH);
+    digitalWrite(yellow2, LOW);
+    digitalWrite(green2, LOW);
+   
+    counter=-30000;
+}
+
+
+}
+
+
+    void DelayOneSec()
+{
+  unsigned long counter=0;
+
+  for(counter=0; counter <= 10000; counter++){}
+
+ }
